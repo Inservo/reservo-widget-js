@@ -86,10 +86,17 @@
         "#tol_newsletter": { width: 360, height: 350 },
       };
 
+      let isOpen = false; // Add this line
+
       Object.entries(links).forEach(([selector, dimensions]) => {
         const element = document.querySelector(selector);
         if (element) {
           element.addEventListener("click", (e) => {
+            if (isOpen) {
+              // Add this check
+              e.preventDefault();
+              return;
+            }
             if (
               window.innerWidth < this.minWidth ||
               window.innerHeight < this.minHeight
@@ -98,14 +105,24 @@
               window.open(element.href, "_blank");
             } else {
               e.preventDefault(); // Prevent default only for FancyBox
-              Fancybox.show([
+              isOpen = true; // Set isOpen to true
+              Fancybox.show(
+                [
+                  {
+                    src: element.href,
+                    type: "iframe",
+                    width: dimensions.width,
+                    height: dimensions.height,
+                  },
+                ],
                 {
-                  src: element.href,
-                  type: "iframe",
-                  width: dimensions.width,
-                  height: dimensions.height,
-                },
-              ]);
+                  on: {
+                    destroy: () => {
+                      isOpen = false; // Reset isOpen when FancyBox is closed
+                    },
+                  },
+                }
+              );
             }
           });
         }
