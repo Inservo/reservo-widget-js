@@ -81,6 +81,10 @@
           width: this.getModuleWidth(),
           height: this.getModuleHeight(),
         },
+        "#reservation-widget": {
+          width: this.getModuleWidth(),
+          height: this.getModuleHeight(),
+        },
         "#tol_menus": { width: 645, height: 500 },
         "#tol_carte": { width: 500, height: 420 },
         "#tol_newsletter": { width: 360, height: 350 },
