@@ -3,8 +3,8 @@
     constructor() {
       this.defaultHeight = 450;
       this.defaultWidth = 320;
-      this.minWidth = 849;
-      this.minHeight = 649;
+      // this.minWidth = 849;
+      // this.minHeight = 649;
     }
 
     async init() {
@@ -54,24 +54,6 @@
         // FancyBox options
       });
 
-      // const style = document.createElement("style");
-      // style.textContent = `
-      //   .fancybox__backdrop {
-      //     background: rgba(0, 0, 0, 0.1) !important;
-      //   }
-      //   .fancybox__container {
-      //     --fancybox-bg: transparent;
-      //   }
-      //   .fancybox__content {
-      //     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      //     border-radius: 8px;
-      //   }
-      //   .is-close-btn {
-      //     display: none;
-      //   }
-      // `;
-      // document.head.appendChild(style);
-
       const style = document.createElement("style");
       style.textContent = `
         .fancybox__backdrop {
@@ -79,21 +61,10 @@
         }
         .fancybox__container {
           --fancybox-bg: transparent;
-          padding: 0 !important;
-          margin: 0 !important;
         }
         .fancybox__content {
-          box-shadow: none;
-          border-radius: 0;
-          padding: 0 !important;
-          margin: 0 !important;
-        }
-        .fancybox__viewport {
-          padding: 0 !important;
-        }
-        .fancybox__iframe {
-          padding: 0 !important;
-          margin: 0 !important;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+          border-radius: 16px;
         }
         .is-close-btn {
           display: none;
