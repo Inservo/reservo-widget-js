@@ -234,9 +234,9 @@
         }
         .fancybox__content {
           box-shadow: none;
-          border-radius: 0;
-          padding: 0 !important;
-          margin: 0 !important;
+          border-radius: 15px;
+          padding: 0px !important;
+          margin: 0px !important;
         }
         .fancybox__viewport {
           padding: 0 !important;
