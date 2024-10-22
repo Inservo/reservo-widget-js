@@ -227,12 +227,10 @@
         .fancybox__backdrop {
           background: rgba(0, 0, 0, 0.1) !important;
         }
-        .fancybox__container {
-          --fancybox-bg: transparent;
-        }
-        .fancybox__container .fancybox__content {
-          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1) !important;
-          border-radius: 15px !important;
+        .fancybox__content {
+          --fancybox-content-bg: transparent;
+          --fancybox-content-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+          --fancybox-content-radius: 15px;
           padding: 0 !important;
         }
         .fancybox__container .fancybox__iframe {
