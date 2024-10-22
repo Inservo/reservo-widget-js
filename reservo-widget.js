@@ -68,11 +68,11 @@
         }
         .fancybox__container .fancybox__carousel .fancybox__viewport .fancybox__track .fancybox__slide .fancybox__content {
           box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-          border-radius: 15px;
-          padding: 0;
+          border-radius: 15px !important;
+          padding: 0 !important;
         }
         .fancybox__container .fancybox__carousel .fancybox__viewport .fancybox__track .fancybox__slide .fancybox__content .fancybox__iframe {
-          border-radius: 15px;
+          border-radius: 15px !important;
         }
         .is-close-btn {
           display: none;
