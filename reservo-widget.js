@@ -68,7 +68,7 @@
           padding: 0;
         }
         .fancybox__iframe {
-          border-radiux: 15px;
+          border-radius: 15px;
         }
         .is-close-btn {
           display: none;
