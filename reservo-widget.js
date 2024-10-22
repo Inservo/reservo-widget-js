@@ -14,11 +14,15 @@
     }
 
     async loadFancyBox() {
-      return new Promise((resolve, reject) => {
+      await new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src =
           "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
-        script.onload = resolve;
+        script.onload = () => {
+          // Load CSS after script loads
+          this.loadCSS();
+          resolve();
+        };
         script.onerror = reject;
         document.head.appendChild(script);
       });
@@ -62,7 +66,7 @@
         .fancybox__container {
           --fancybox-bg: transparent;
         }
-        .fancybox__content {
+        .fancybox__container .fancybox__content {
           box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
           border-radius: 15px;
           padding: 0;
