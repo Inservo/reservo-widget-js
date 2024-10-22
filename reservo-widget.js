@@ -237,7 +237,7 @@
           padding: 0 !important;
           margin: 0 !important;
         }
-        .fancybox__container .fancybox__content {
+        .fancybox-focus-guard .fancybox__container .fancybox__backdrop .fancybox__carousel .fancybox__viewport .fancybox__track .fancybox__slide .fancybox__content {
           box-shadow: none;
           border-radius: 15px !important;
           padding: 0px !important;
