@@ -174,6 +174,7 @@
       await this.loadFancyBox();
       await this.loadCSS();
       this.setupFancyBox();
+      this.injectCustomStyles(); // Inject custom styles after CSS has loaded
     }
 
     async loadFancyBox() {
@@ -199,6 +200,32 @@
       });
     }
 
+    injectCustomStyles() {
+      const style = document.createElement("style");
+      style.textContent = `
+        /* Target the custom class added to Fancybox */
+        .custom-fancybox .fancybox__container {
+          background: rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-fancybox .fancybox__content {
+          background: transparent;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+          border-radius: 15px;
+          padding: 0;
+        }
+
+        .custom-fancybox .fancybox__iframe {
+          border-radius: 15px;
+        }
+
+        .custom-fancybox .fancybox__close {
+          display: none;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
     getModuleHeight() {
       const moduleElement = document.getElementById("reservo-widget");
       return moduleElement?.dataset.moduleHeight
@@ -220,7 +247,6 @@
       Fancybox.bind("[data-fancybox]", {
         // You can set default options here if needed
       });
-      // No need to inject custom styles here anymore
       this.setupModuleLinks();
     }
 
@@ -284,15 +310,9 @@
                   },
                 ],
                 {
-                  style: {
-                    "--fancybox-bg": "rgba(0, 0, 0, 0.1)",
-                    "--fancybox-content-bg": "transparent",
-                    "--fancybox-content-shadow": "0 0 15px rgba(0, 0, 0, 0.1)",
-                    "--fancybox-content-radius": "15px",
-                    "padding": "0",
-                  },
+                  // Add your custom class here
+                  className: "custom-fancybox",
                   closeButton: false,
-                  // Other options...
                   on: {
                     destroy: () => {
                       this.isOpen = false;
