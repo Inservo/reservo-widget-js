@@ -218,30 +218,9 @@
 
     setupFancyBox() {
       Fancybox.bind("[data-fancybox]", {
-        // Fancybox options can be set here
+        // You can set default options here if needed
       });
-
-      // Ensure this runs after CSS has loaded
-      const style = document.createElement("style");
-      style.textContent = `
-        .fancybox__backdrop {
-          background: rgba(0, 0, 0, 0.1) !important;
-        }
-        .fancybox__content {
-          --fancybox-content-bg: transparent;
-          --fancybox-content-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-          --fancybox-content-radius: 15px;
-          padding: 0 !important;
-        }
-        .fancybox__container .fancybox__iframe {
-          border-radius: 15px !important;
-        }
-        .is-close-btn {
-          display: none !important;
-        }
-      `;
-      document.head.appendChild(style);
-
+      // No need to inject custom styles here anymore
       this.setupModuleLinks();
     }
 
@@ -305,6 +284,15 @@
                   },
                 ],
                 {
+                  style: {
+                    "--fancybox-bg": "rgba(0, 0, 0, 0.1)",
+                    "--fancybox-content-bg": "transparent",
+                    "--fancybox-content-shadow": "0 0 15px rgba(0, 0, 0, 0.1)",
+                    "--fancybox-content-radius": "15px",
+                    "padding": "0",
+                  },
+                  closeButton: false,
+                  // Other options...
                   on: {
                     destroy: () => {
                       this.isOpen = false;
@@ -330,9 +318,6 @@
 
   // Run initialization when DOM is ready
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initInstaBook);
-  } else {
-    initInstaBook();
-  }
-})();
+    document.addEventListener("DOMContentLoaded", i
+
 
