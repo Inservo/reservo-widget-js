@@ -237,9 +237,9 @@
           padding: 0 !important;
           margin: 0 !important;
         }
-        .fancybox-container .fancybox__content {
+        .fancybox__container .fancybox__content {
           box-shadow: none;
-          border-radius: 15px;
+          border-radius: 15px !important;
           padding: 0px !important;
           margin: 0px !important;
         }
