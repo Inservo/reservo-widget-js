@@ -318,6 +318,10 @@
 
   // Run initialization when DOM is ready
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", i
+    document.addEventListener("DOMContentLoaded", initInstaBook);
+  } else {
+    initInstaBook();
+  }
+})();
 
 
