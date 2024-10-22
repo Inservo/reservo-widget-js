@@ -1,8 +1,8 @@
 // (function () {
 //   class InstaBookModule {
 //     constructor() {
-//       this.defaultHeight = 450;
-//       this.defaultWidth = 320;
+//       this.defaultHeight = 600;
+//       this.defaultWidth = 512;
 //       this.minWidth = 849;
 //       this.minHeight = 649;
 //     }
@@ -202,6 +202,21 @@
         : this.defaultWidth;
     }
 
+    getReservationModuleHeight() {
+      const moduleElement = document.getElementById("reservation-widget"); // Updated ID
+      return moduleElement?.dataset.moduleHeight
+        ? parseInt(moduleElement.dataset.moduleHeight, 10)
+        : this.defaultHeight;
+    }
+
+    getReservationModuleWidth() {
+      const moduleElement = document.getElementById("reservation-widget"); // Updated ID
+      return moduleElement?.dataset.moduleWidth
+        ? parseInt(moduleElement.dataset.moduleWidth, 10)
+        : this.defaultWidth;
+    }
+
+
     setupFancyBox() {
       Fancybox.bind("[data-fancybox]", {
         // FancyBox options
@@ -246,8 +261,8 @@
           height: this.getModuleHeight(),
         },
         "#reservation-widget": {
-          width: this.getModuleWidth(),
-          height: this.getModuleHeight(),
+          width: this.getReservationModuleWidth(),
+          height: this.getReservationModuleHeight(),
         },
         "#tol_menus": { width: 645, height: 500 },
         "#tol_carte": { width: 500, height: 420 },
