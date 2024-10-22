@@ -67,6 +67,9 @@
           border-radius: 15px;
           padding: 0;
         }
+        .fancybox__iframe {
+          border-radiux: 15px;
+        }
         .is-close-btn {
           display: none;
         }
