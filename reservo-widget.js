@@ -167,7 +167,7 @@
       this.defaultWidth = 512;
       this.minWidth = 849;
       this.minHeight = 649;
-      this.isOpen = false; // Moved isOpen here to maintain state
+      this.isOpen = false; // Maintain state
     }
 
     async init() {
@@ -204,14 +204,14 @@
       const style = document.createElement("style");
       style.textContent = `
         /* Target the custom class added to Fancybox */
-        .custom-fancybox .fancybox__container {
-          background: rgba(0, 0, 0, 0.1);
+        .custom-fancybox {
+          --fancybox-bg: rgba(0, 0, 0, 0.1);
+          --fancybox-content-bg: transparent;
+          --fancybox-content-radius: 15px;
+          --fancybox-content-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
 
         .custom-fancybox .fancybox__content {
-          background: transparent;
-          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-          border-radius: 15px;
           padding: 0;
         }
 
@@ -245,7 +245,7 @@
 
     setupFancyBox() {
       Fancybox.bind("[data-fancybox]", {
-        // You can set default options here if needed
+        // Default options can be set here if needed
       });
       this.setupModuleLinks();
     }
@@ -310,8 +310,8 @@
                   },
                 ],
                 {
-                  // Add your custom class here
-                  className: "custom-fancybox",
+                  // Use 'mainClass' to add a custom class
+                  mainClass: "custom-fancybox",
                   closeButton: false,
                   on: {
                     destroy: () => {
