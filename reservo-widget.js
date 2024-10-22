@@ -162,7 +162,7 @@
 
     async init() {
       await this.loadFancyBox();
-      this.loadCSS();
+      await this.loadCSS();
       this.setupFancyBox();
     }
 
@@ -178,12 +178,17 @@
     }
 
     loadCSS() {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href =
-        "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
-      document.head.appendChild(link);
+      return new Promise((resolve, reject) => {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href =
+          "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
+        link.onload = resolve;  // Resolve the promise when CSS is loaded
+        link.onerror = reject;
+        document.head.appendChild(link);
+      });
     }
+
 
     getModuleHeight() {
       const moduleElement = document.getElementById("reservo-widget");
@@ -232,7 +237,7 @@
           padding: 0 !important;
           margin: 0 !important;
         }
-        .fancybox__content {
+        .fancybox-container .fancybox__content {
           box-shadow: none;
           border-radius: 15px;
           padding: 0px !important;
