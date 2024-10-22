@@ -65,7 +65,7 @@
         .fancybox__content {
           box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
           border-radius: 15px;
-          padding: 0px;
+          padding: 0;
         }
         .is-close-btn {
           display: none;
