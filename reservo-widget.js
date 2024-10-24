@@ -77,12 +77,12 @@
           padding: 0 !important;
         }
 
-        ..fancybox__container {
+        .fancybox__container {
           padding: 0 !important;
           background-color: transparent;
         }
 
-        ..fancybox__content {
+        .fancybox__content {
           box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
           border-radius: 15px !important;
           padding: 0 !important;
@@ -90,6 +90,10 @@
 
         .custom-css .fancybox__iframe {
           border-radius: 15px !important;
+        }
+
+        .fancybox__backdrop {
+          background: rgba(0, 0, 0, 0.1) !important;
         }
 
         .is-close-btn {
