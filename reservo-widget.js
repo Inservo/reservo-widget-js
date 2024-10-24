@@ -174,21 +174,26 @@
 
     async init() {
       await this.loadFancyBox();
-      this.injectCustomStyles();
       this.setupLinks();
     }
 
     async loadFancyBox() {
       await new Promise((resolve, reject) => {
         const script = document.createElement("script");
-        script.src = "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
+        script.src =
+          "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
         script.onload = () => {
           // Load CSS after script
           const link = document.createElement("link");
           link.rel = "stylesheet";
-          link.href = "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
+          link.href =
+            "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
+          link.onload = () => {
+            // Now inject custom styles after Fancybox CSS has loaded
+            this.injectCustomStyles();
+            resolve();
+          };
           document.head.appendChild(link);
-          resolve();
         };
         script.onerror = reject;
         document.head.appendChild(script);
@@ -196,20 +201,16 @@
     }
 
     injectCustomStyles() {
-      const style = document.createElement('style');
+      const style = document.createElement("style");
       style.textContent = `
-        :root {
-          --fancybox-content-padding: 0 !important;
+        .fancybox__container.no-padding {
+          --fancybox-content-padding: 0;
         }
-
-        .fancybox__content {
+        /* Ensure padding is removed even in compact mode */
+        .fancybox__container.no-padding .fancybox__content {
           padding: 0 !important;
         }
-
-        .fancybox__container:not(.is-compact) .fancybox__content {
-          padding: 0 !important;
-        }
-
+        /* Hide the close button if needed */
         .fancybox__content > .f-button.is-close-btn {
           display: none !important;
         }
@@ -218,67 +219,42 @@
     }
 
     setupLinks() {
-      document.querySelectorAll('#reservo-widget, #reservation-widget').forEach(element => {
-        if (element) {
-          element.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            Fancybox.show([
-              {
-                src: element.href,
-                type: "iframe",
-                preload: false,
-              }
-            ], {
-              mainClass: `no-padding`,
-              template: {
-                // Remove close button from template
-                closeButton: false,
-              },
-              // Disable animations
-              animated: false,
-              // Disable click to close
-              click: null,
-              // Disable drag to close
-              dragToClose: false,
-              // Remove default padding
-              l10n: {
-                CLOSE: "Close",
-                NEXT: "Next",
-                PREV: "Previous",
-                MODAL: "You can close this modal content with the ESC key"
-              },
-              Images: {
-                zoom: false,
-              },
-              showClass: false,
-              hideClass: false,
-              closeClass: false,
-              // Add custom CSS class
-              customClass: "no-padding",
-              hideScrollbar: true,
-              touch: false,
-              keyboard: {
-                Escape: "close",
-              },
-              on: {
-                "init": (fancybox) => {
-                  const content = fancybox.getSlide()?.contentEl;
-                  if (content) {
-                    content.style.setProperty('padding', '0', 'important');
-                  }
-                },
-                "done": (fancybox) => {
-                  const content = fancybox.getSlide()?.contentEl;
-                  if (content) {
-                    content.style.setProperty('padding', '0', 'important');
-                  }
+      document
+        .querySelectorAll("#reservo-widget, #reservation-widget")
+        .forEach((element) => {
+          if (element) {
+            element.addEventListener("click", (e) => {
+              e.preventDefault();
+
+              Fancybox.show(
+                [
+                  {
+                    src: element.href,
+                    type: "iframe",
+                    preload: false,
+                  },
+                ],
+                {
+                  mainClass: "no-padding", // Add custom class to container
+                  template: {
+                    // Remove close button from template if desired
+                    closeButton: false,
+                  },
+                  // Other options...
+                  // Disable animations
+                  animated: false,
+                  // Disable click to close
+                  click: null,
+                  // Disable drag to close
+                  dragToClose: false,
+                  // Disable compact mode if necessary
+                  compact: false,
+                  // Add any other desired options
                 }
-              }
+              );
             });
-          });
-        }
-      });
+          }
+        });
     }
   }
 
@@ -286,4 +262,5 @@
   const instaBook = new InstaBookModule();
   instaBook.init().catch(console.error);
 })();
+
 
