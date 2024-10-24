@@ -165,82 +165,82 @@
 //   }
 // })();
 
-(function () {
-  class InstaBookModule {
-    constructor() {
-      this.defaultHeight = 600;
-      this.defaultWidth = 512;
-    }
+// (function () {
+//   class InstaBookModule {
+//     constructor() {
+//       this.defaultHeight = 600;
+//       this.defaultWidth = 512;
+//     }
 
-    async init() {
-      await this.loadFancyBox();
-      this.setupLinks();
-    }
+//     async init() {
+//       await this.loadFancyBox();
+//       this.setupLinks();
+//     }
 
-    async loadFancyBox() {
-      await new Promise((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src =
-          "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
-        script.onload = () => {
-          const link = document.createElement("link");
-          link.rel = "stylesheet";
-          link.href =
-            "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
-          link.onload = () => {
-            resolve();
-          };
-          document.head.appendChild(link);
-        };
-        script.onerror = reject;
-        document.head.appendChild(script);
-      });
-    }
+//     async loadFancyBox() {
+//       await new Promise((resolve, reject) => {
+//         const script = document.createElement("script");
+//         script.src =
+//           "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
+//         script.onload = () => {
+//           const link = document.createElement("link");
+//           link.rel = "stylesheet";
+//           link.href =
+//             "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
+//           link.onload = () => {
+//             resolve();
+//           };
+//           document.head.appendChild(link);
+//         };
+//         script.onerror = reject;
+//         document.head.appendChild(script);
+//       });
+//     }
 
-    setupLinks() {
-      document
-        .querySelectorAll("#reservo-widget, #reservation-widget")
-        .forEach((element) => {
-          if (element) {
-            element.addEventListener("click", (e) => {
-              e.preventDefault();
+//     setupLinks() {
+//       document
+//         .querySelectorAll("#reservo-widget, #reservation-widget")
+//         .forEach((element) => {
+//           if (element) {
+//             element.addEventListener("click", (e) => {
+//               e.preventDefault();
 
-              Fancybox.show(
-                [
-                  {
-                    src: element.href,
-                    type: "iframe",
-                    preload: false,
-                  },
-                ],
-                {
-                  animated: false,
-                  click: false,
-                  dragToClose: false,
-                  Toolbar: false,
-                  closeButton: false,
-                  compact: false, // Disable compact mode
-                  on: {
-                    // Use the 'done' event to set padding after content is rendered
-                    done: (fancybox, slide) => {
-                      const content = slide.contentEl;
-                      if (content) {
-                        // Remove padding via inline style
-                        content.style.padding = "0";
-                      }
-                    },
-                  },
-                }
-              );
-            });
-          }
-        });
-    }
-  }
+//               Fancybox.show(
+//                 [
+//                   {
+//                     src: element.href,
+//                     type: "iframe",
+//                     preload: false,
+//                   },
+//                 ],
+//                 {
+//                   animated: false,
+//                   click: false,
+//                   dragToClose: false,
+//                   Toolbar: false,
+//                   closeButton: false,
+//                   compact: false, // Disable compact mode
+//                   on: {
+//                     // Use the 'done' event to set padding after content is rendered
+//                     done: (fancybox, slide) => {
+//                       const content = slide.contentEl;
+//                       if (content) {
+//                         // Remove padding via inline style
+//                         content.style.padding = "0";
+//                       }
+//                     },
+//                   },
+//                 }
+//               );
+//             });
+//           }
+//         });
+//     }
+//   }
 
-  // Initialize
-  const instaBook = new InstaBookModule();
-  instaBook.init().catch(console.error);
-})();
+//   // Initialize
+//   const instaBook = new InstaBookModule();
+//   instaBook.init().catch(console.error);
+// })();
 
 
