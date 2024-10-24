@@ -183,12 +183,8 @@
     async loadFancyBox() {
       await new Promise((resolve, reject) => {
         const script = document.createElement("script");
-        script.src =
-          "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
-        script.onload = () => {
-          this.loadCSS();
-          resolve();
-        };
+        script.src = "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
+        script.onload = resolve;
         script.onerror = reject;
         document.head.appendChild(script);
       });
@@ -197,9 +193,26 @@
     loadCSS() {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href =
-        "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
+      link.href = "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
       document.head.appendChild(link);
+
+      // Add our custom styles
+      const customStyles = document.createElement("style");
+      customStyles.textContent = `
+        .fancybox__container {
+          --fancybox-content-padding: 0;
+        }
+        
+        .fancybox__content {
+          padding: 0 !important;
+          border-radius: 15px !important;
+        }
+
+        .fancybox__iframe {
+          border-radius: 15px !important;
+        }
+      `;
+      document.head.appendChild(customStyles);
     }
 
     getModuleHeight() {
@@ -212,69 +225,11 @@
     getModuleWidth() {
       const moduleElement = document.getElementById("reservo-widget");
       return moduleElement?.dataset.moduleWidth
-        ? Math.max(
-            parseInt(moduleElement.dataset.moduleWidth, 10),
-            this.defaultWidth
-          )
+        ? Math.max(parseInt(moduleElement.dataset.moduleWidth, 10), this.defaultWidth)
         : this.defaultWidth;
     }
-    
-    setupFancyBox() {
-      Fancybox.bind("[data-fancybox]", {
-        showClass: "custom-fancybox",
-      });
-    
-      this.injectCustomStyles();
-      this.setupModuleLinks();
-    }
-    
-    injectCustomStyles() {
-      const style = document.createElement("style");
-      style.textContent = `
-        /* Reset Fancybox container styles */
-        .custom-fancybox .fancybox__container {
-          padding: 0 !important;
-          background-color: transparent !important;
-        }
-        
-        /* Override content styles */
-        .custom-fancybox .fancybox__content {
-          padding: 0 !important;
-          margin: 0 !important;
-          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1) !important;
-          border-radius: 15px !important;
-          overflow: hidden !important;
-        }
-        
-        /* Style the iframe */
-        .custom-fancybox .fancybox__iframe {
-          border-radius: 15px !important;
-          border: none !important;
-          background: #fff !important;
-        }
-        
-        /* Hide close button */
-        .custom-fancybox .is-close-btn {
-          display: none !important;
-        }
-        
-        /* Override any flex-related properties */
-        .custom-fancybox .fancybox__content {
-          flex: 0 1 auto !important;
-          display: block !important;
-        }
-        
-        /* Ensure content takes exact dimensions */
-        .custom-fancybox .fancybox__content,
-        .custom-fancybox .fancybox__iframe {
-          width: 100% !important;
-          height: 100% !important;
-        }
-      `;
-      document.head.appendChild(style);
-    }
 
-    setupModuleLinks() {
+    setupFancyBox() {
       const links = {
         "#reservo-widget": {
           width: this.getModuleWidth(),
@@ -289,24 +244,15 @@
         "#tol_newsletter": { width: 360, height: 350 },
       };
 
-      let isOpen = false;
-
       Object.entries(links).forEach(([selector, dimensions]) => {
         const element = document.querySelector(selector);
         if (element) {
+          element.setAttribute("data-fancybox", "");
           element.addEventListener("click", (e) => {
-            if (isOpen) {
-              e.preventDefault();
-              return;
-            }
-            if (
-              window.innerWidth < this.minWidth ||
-              window.innerHeight < this.minHeight
-            ) {
+            if (window.innerWidth < this.minWidth || window.innerHeight < this.minHeight) {
               window.open(element.href, "_blank");
             } else {
               e.preventDefault();
-              isOpen = true;
               Fancybox.show(
                 [
                   {
@@ -314,14 +260,24 @@
                     type: "iframe",
                     width: dimensions.width,
                     height: dimensions.height,
-                  },
+                  }
                 ],
                 {
-                  on: {
-                    destroy: () => {
-                      isOpen = false;
-                    },
+                  mainClass: "custom-fancybox",
+                  template: {
+                    closeButton: false
                   },
+                  compact: true,
+                  contentClick: false,
+                  dragToClose: false,
+                  on: {
+                    init: (fancybox) => {
+                      const contentEl = fancybox.getSlide()?.contentEl;
+                      if (contentEl) {
+                        contentEl.style.padding = "0";
+                      }
+                    }
+                  }
                 }
               );
             }
