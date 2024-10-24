@@ -172,7 +172,6 @@
       this.defaultWidth = 512;
       this.minWidth = 849;
       this.minHeight = 649;
-      this.isOpen = false; // Maintain state
     }
 
     async init() {
@@ -186,7 +185,10 @@
         const script = document.createElement("script");
         script.src =
           "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
-        script.onload = resolve;
+        script.onload = () => {
+          this.loadCSS();
+          resolve();
+        };
         script.onerror = reject;
         document.head.appendChild(script);
       });
@@ -216,22 +218,60 @@
           )
         : this.defaultWidth;
     }
-
+    
     setupFancyBox() {
       Fancybox.bind("[data-fancybox]", {
-        // Custom Fancybox options
-        on: {
-          reveal: (fancybox) => {
-            // Remove padding from the Fancybox container dynamically
-            const container = fancybox.$container;
-            if (container) {
-              container.style.padding = "0"; // Remove padding
-            }
-          },
-        },
+        showClass: "custom-fancybox",
       });
-
+    
+      this.injectCustomStyles();
       this.setupModuleLinks();
+    }
+    
+    injectCustomStyles() {
+      const style = document.createElement("style");
+      style.textContent = `
+        /* Reset Fancybox container styles */
+        .custom-fancybox .fancybox__container {
+          padding: 0 !important;
+          background-color: transparent !important;
+        }
+        
+        /* Override content styles */
+        .custom-fancybox .fancybox__content {
+          padding: 0 !important;
+          margin: 0 !important;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1) !important;
+          border-radius: 15px !important;
+          overflow: hidden !important;
+        }
+        
+        /* Style the iframe */
+        .custom-fancybox .fancybox__iframe {
+          border-radius: 15px !important;
+          border: none !important;
+          background: #fff !important;
+        }
+        
+        /* Hide close button */
+        .custom-fancybox .is-close-btn {
+          display: none !important;
+        }
+        
+        /* Override any flex-related properties */
+        .custom-fancybox .fancybox__content {
+          flex: 0 1 auto !important;
+          display: block !important;
+        }
+        
+        /* Ensure content takes exact dimensions */
+        .custom-fancybox .fancybox__content,
+        .custom-fancybox .fancybox__iframe {
+          width: 100% !important;
+          height: 100% !important;
+        }
+      `;
+      document.head.appendChild(style);
     }
 
     setupModuleLinks() {
@@ -249,7 +289,7 @@
         "#tol_newsletter": { width: 360, height: 350 },
       };
 
-      let isOpen = false; // Add this line
+      let isOpen = false;
 
       Object.entries(links).forEach(([selector, dimensions]) => {
         const element = document.querySelector(selector);
@@ -278,13 +318,6 @@
                 ],
                 {
                   on: {
-                    reveal: (fancybox) => {
-                      // Remove padding from Fancybox container dynamically
-                      const container = fancybox.$container;
-                      if (container) {
-                        container.style.padding = "0"; // Remove padding
-                      }
-                    },
                     destroy: () => {
                       isOpen = false;
                     },
@@ -298,7 +331,6 @@
     }
   }
 
-  // Initialize the module
   function initInstaBook() {
     const pixelRatio = window.devicePixelRatio || 1;
     if (window.innerWidth / pixelRatio > 641) {
@@ -307,7 +339,6 @@
     }
   }
 
-  // Run initialization when DOM is ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initInstaBook);
   } else {
