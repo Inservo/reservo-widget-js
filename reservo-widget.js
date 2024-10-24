@@ -1,9 +1,8 @@
-Original
 (function () {
   class InstaBookModule {
     constructor() {
-      this.defaultHeight = 600;
-      this.defaultWidth = 512;
+      this.defaultHeight = 450;
+      this.defaultWidth = 320;
       this.minWidth = 849;
       this.minHeight = 649;
     }
@@ -15,15 +14,11 @@ Original
     }
 
     async loadFancyBox() {
-      await new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src =
           "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
-        script.onload = () => {
-          // Load CSS after script loads
-          this.loadCSS();
-          resolve();
-        };
+        script.onload = resolve;
         script.onerror = reject;
         document.head.appendChild(script);
       });
@@ -53,40 +48,31 @@ Original
           )
         : this.defaultWidth;
     }
-    
+
     setupFancyBox() {
       Fancybox.bind("[data-fancybox]", {
-        showClass: "custom-css", // This will add the custom-css class
+        // FancyBox options
       });
-    
-      this.injectCustomStyles();
-      this.setupModuleLinks();
-    }
-    
-    injectCustomStyles() {
+
       const style = document.createElement("style");
       style.textContent = `
-        /* Custom class applied when Fancybox is shown */
-        .custom-css .fancybox__container {
-          padding: 0 !important;
-          background-color: transparent;
+        .fancybox__backdrop {
+          background: rgba(0, 0, 0, 0.1) !important;
         }
-    
-        .custom-css .fancybox__content {
+        .fancybox__container {
+          --fancybox-bg: transparent;
+        }
+        .fancybox__content {
           box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-          border-radius: 15px !important;
-          padding: 0 !important;
+          border-radius: 8px;
         }
-    
-        .custom-css .fancybox__iframe {
-          border-radius: 15px !important;
-        }
-    
         .is-close-btn {
           display: none;
         }
       `;
       document.head.appendChild(style);
+
+      this.setupModuleLinks();
     }
 
     setupModuleLinks() {
@@ -120,6 +106,18 @@ Original
               window.innerHeight < this.minHeight
             ) {
               // Don't prevent default behavior, let the link open in a new tab
+              console.log(
+                "setupModuleLinks: window.innerWidth: ",
+                window.innerWidth
+              );
+              console.log("setupModuleLinks: this.minWidth: ", this.minWidth);
+
+              console.log(
+                "setupModuleLinks: window.innerHeight: ",
+                window.innerHeight
+              );
+              console.log("setupModuleLinks: this.minHeight: ", this.minHeight);
+
               window.open(element.href, "_blank");
             } else {
               e.preventDefault(); // Prevent default only for FancyBox
@@ -164,5 +162,3 @@ Original
     initInstaBook();
   }
 })();
-
-
