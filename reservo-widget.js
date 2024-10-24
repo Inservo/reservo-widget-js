@@ -170,135 +170,120 @@
     constructor() {
       this.defaultHeight = 600;
       this.defaultWidth = 512;
-      this.minWidth = 849;
-      this.minHeight = 649;
     }
 
     async init() {
       await this.loadFancyBox();
-      this.loadCSS();
-      this.setupFancyBox();
+      this.injectCustomStyles();
+      this.setupLinks();
     }
 
     async loadFancyBox() {
       await new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src = "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
-        script.onload = resolve;
+        script.onload = () => {
+          // Load CSS after script
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
+          document.head.appendChild(link);
+          resolve();
+        };
         script.onerror = reject;
         document.head.appendChild(script);
       });
     }
 
-    loadCSS() {
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
-      document.head.appendChild(link);
-
-      // Add our custom styles
-      const customStyles = document.createElement("style");
-      customStyles.textContent = `
-        .fancybox__container {
-          --fancybox-content-padding: 0;
+    injectCustomStyles() {
+      const style = document.createElement('style');
+      style.textContent = `
+        :root {
+          --fancybox-content-padding: 0 !important;
         }
-        
+
         .fancybox__content {
           padding: 0 !important;
-          border-radius: 15px !important;
         }
 
-        .fancybox__iframe {
-          border-radius: 15px !important;
+        .fancybox__container:not(.is-compact) .fancybox__content {
+          padding: 0 !important;
+        }
+
+        .fancybox__content > .f-button.is-close-btn {
+          display: none !important;
         }
       `;
-      document.head.appendChild(customStyles);
+      document.head.appendChild(style);
     }
 
-    getModuleHeight() {
-      const moduleElement = document.getElementById("reservo-widget");
-      return moduleElement?.dataset.moduleHeight
-        ? parseInt(moduleElement.dataset.moduleHeight, 10)
-        : this.defaultHeight;
-    }
-
-    getModuleWidth() {
-      const moduleElement = document.getElementById("reservo-widget");
-      return moduleElement?.dataset.moduleWidth
-        ? Math.max(parseInt(moduleElement.dataset.moduleWidth, 10), this.defaultWidth)
-        : this.defaultWidth;
-    }
-
-    setupFancyBox() {
-      const links = {
-        "#reservo-widget": {
-          width: this.getModuleWidth(),
-          height: this.getModuleHeight(),
-        },
-        "#reservation-widget": {
-          width: this.getModuleWidth(),
-          height: this.getModuleHeight(),
-        },
-        "#tol_menus": { width: 645, height: 500 },
-        "#tol_carte": { width: 500, height: 420 },
-        "#tol_newsletter": { width: 360, height: 350 },
-      };
-
-      Object.entries(links).forEach(([selector, dimensions]) => {
-        const element = document.querySelector(selector);
+    setupLinks() {
+      document.querySelectorAll('#reservo-widget, #reservation-widget').forEach(element => {
         if (element) {
-          element.setAttribute("data-fancybox", "");
-          element.addEventListener("click", (e) => {
-            if (window.innerWidth < this.minWidth || window.innerHeight < this.minHeight) {
-              window.open(element.href, "_blank");
-            } else {
-              e.preventDefault();
-              Fancybox.show(
-                [
-                  {
-                    src: element.href,
-                    type: "iframe",
-                    width: dimensions.width,
-                    height: dimensions.height,
+          element.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            Fancybox.show([
+              {
+                src: element.href,
+                type: "iframe",
+                preload: false,
+              }
+            ], {
+              mainClass: `no-padding`,
+              template: {
+                // Remove close button from template
+                closeButton: false,
+              },
+              // Disable animations
+              animated: false,
+              // Disable click to close
+              click: null,
+              // Disable drag to close
+              dragToClose: false,
+              // Remove default padding
+              l10n: {
+                CLOSE: "Close",
+                NEXT: "Next",
+                PREV: "Previous",
+                MODAL: "You can close this modal content with the ESC key"
+              },
+              Images: {
+                zoom: false,
+              },
+              showClass: false,
+              hideClass: false,
+              closeClass: false,
+              // Add custom CSS class
+              customClass: "no-padding",
+              hideScrollbar: true,
+              touch: false,
+              keyboard: {
+                Escape: "close",
+              },
+              on: {
+                "init": (fancybox) => {
+                  const content = fancybox.getSlide()?.contentEl;
+                  if (content) {
+                    content.style.setProperty('padding', '0', 'important');
                   }
-                ],
-                {
-                  mainClass: "custom-fancybox",
-                  template: {
-                    closeButton: false
-                  },
-                  compact: true,
-                  contentClick: false,
-                  dragToClose: false,
-                  on: {
-                    init: (fancybox) => {
-                      const contentEl = fancybox.getSlide()?.contentEl;
-                      if (contentEl) {
-                        contentEl.style.padding = "0";
-                      }
-                    }
+                },
+                "done": (fancybox) => {
+                  const content = fancybox.getSlide()?.contentEl;
+                  if (content) {
+                    content.style.setProperty('padding', '0', 'important');
                   }
                 }
-              );
-            }
+              }
+            });
           });
         }
       });
     }
   }
 
-  function initInstaBook() {
-    const pixelRatio = window.devicePixelRatio || 1;
-    if (window.innerWidth / pixelRatio > 641) {
-      const instaBook = new InstaBookModule();
-      instaBook.init().catch(console.error);
-    }
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initInstaBook);
-  } else {
-    initInstaBook();
-  }
+  // Initialize
+  const instaBook = new InstaBookModule();
+  instaBook.init().catch(console.error);
 })();
 
