@@ -188,8 +188,6 @@
           link.href =
             "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
           link.onload = () => {
-            // Inject custom styles after Fancybox CSS has loaded
-            this.injectCustomStyles();
             resolve();
           };
           document.head.appendChild(link);
@@ -197,24 +195,6 @@
         script.onerror = reject;
         document.head.appendChild(script);
       });
-    }
-
-    injectCustomStyles() {
-      const style = document.createElement("style");
-      style.textContent = `
-        /* Add custom class to target Fancybox instance */
-        .fancybox__container.custom-padding {
-          --fancybox-content-padding: 0;
-        }
-        .fancybox__container.custom-padding .fancybox__content {
-          padding: 0; /* Remove any additional padding */
-        }
-        /* Hide the close button if desired */
-        .fancybox__content > .f-button.is-close-btn {
-          display: none;
-        }
-      `;
-      document.head.appendChild(style);
     }
 
     setupLinks() {
@@ -234,13 +214,22 @@
                   },
                 ],
                 {
-                  mainClass: "custom-padding", // Add custom class
-                  // Other options if needed
                   animated: false,
                   click: false,
                   dragToClose: false,
                   Toolbar: false,
-                  closeButton: "top", // Or false to remove it
+                  closeButton: false,
+                  compact: false, // Disable compact mode
+                  on: {
+                    // Use the 'done' event to set padding after content is rendered
+                    done: (fancybox, slide) => {
+                      const content = slide.contentEl;
+                      if (content) {
+                        // Remove padding via inline style
+                        content.style.padding = "0";
+                      }
+                    },
+                  },
                 }
               );
             });
