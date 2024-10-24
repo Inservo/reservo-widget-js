@@ -1,8 +1,8 @@
 (function () {
   class InstaBookModule {
     constructor() {
-      this.defaultHeight = 450;
-      this.defaultWidth = 320;
+      this.defaultHeight = 600;
+      this.defaultWidth = 512;
       this.minWidth = 849;
       this.minHeight = 649;
     }
@@ -14,11 +14,15 @@
     }
 
     async loadFancyBox() {
-      return new Promise((resolve, reject) => {
+      await new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src =
           "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
-        script.onload = resolve;
+        script.onload = () => {
+          // Load CSS after script loads
+          this.loadCSS();
+          resolve();
+        };
         script.onerror = reject;
         document.head.appendChild(script);
       });
@@ -51,28 +55,48 @@
 
     setupFancyBox() {
       Fancybox.bind("[data-fancybox]", {
-        // FancyBox options
+        showClass: "custom-css", // This will add the custom-css class
       });
 
+      this.injectCustomStyles();
+      this.setupModuleLinks();
+    }
+
+    injectCustomStyles() {
       const style = document.createElement("style");
       style.textContent = `
-        .fancybox__backdrop {
-          background: rgba(0, 0, 0, 0.1) !important;
+        /* Custom class applied when Fancybox is shown */
+        .custom-css .fancybox__container {
+          padding: 0 !important;
+          background-color: transparent;
         }
-        .fancybox__container {
-          --fancybox-bg: transparent;
-        }
-        .fancybox__content {
+
+        .custom-css .fancybox__content {
           box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-          border-radius: 8px;
+          border-radius: 15px !important;
+          padding: 0 !important;
         }
+
+        ..fancybox__container {
+          padding: 0 !important;
+          background-color: transparent;
+        }
+
+        ..fancybox__content {
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+          border-radius: 15px !important;
+          padding: 0 !important;
+        }
+
+        .custom-css .fancybox__iframe {
+          border-radius: 15px !important;
+        }
+
         .is-close-btn {
           display: none;
         }
       `;
       document.head.appendChild(style);
-
-      this.setupModuleLinks();
     }
 
     setupModuleLinks() {
@@ -106,18 +130,6 @@
               window.innerHeight < this.minHeight
             ) {
               // Don't prevent default behavior, let the link open in a new tab
-              console.log(
-                "setupModuleLinks: window.innerWidth: ",
-                window.innerWidth
-              );
-              console.log("setupModuleLinks: this.minWidth: ", this.minWidth);
-
-              console.log(
-                "setupModuleLinks: window.innerHeight: ",
-                window.innerHeight
-              );
-              console.log("setupModuleLinks: this.minHeight: ", this.minHeight);
-
               window.open(element.href, "_blank");
             } else {
               e.preventDefault(); // Prevent default only for FancyBox
