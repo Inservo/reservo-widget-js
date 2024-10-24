@@ -67,12 +67,12 @@
 //         .fancybox__container {
 //           --fancybox-bg: transparent;
 //         }
-//         .fancybox__container .fancybox__carousel .fancybox__viewport .fancybox__track .fancybox__slide .fancybox__content {
+//         .fancybox__content {
 //           box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 //           border-radius: 15px !important;
 //           padding: 0 !important;
 //         }
-//         .fancybox__container .fancybox__carousel .fancybox__viewport .fancybox__track .fancybox__slide .fancybox__content .fancybox__iframe {
+//         .fancybox__iframe {
 //           border-radius: 15px !important;
 //         }
 //         .is-close-btn {
@@ -203,28 +203,34 @@
     injectCustomStyles() {
       const style = document.createElement("style");
       style.textContent = `
-        /* Target the custom class added to Fancybox */
+        /* Target the Fancybox container */
+        .custom-fancybox .fancybox__container {
+          padding: 0 !important;
+        }
+    
+        /* Target other Fancybox components */
         .custom-fancybox {
           --fancybox-bg: rgba(0, 0, 0, 0.1);
           --fancybox-content-bg: transparent;
           --fancybox-content-radius: 15px;
           --fancybox-content-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
-
+    
         .custom-fancybox .fancybox__content {
-          padding: 0;
+          padding: 0 !important;
         }
-
+    
         .custom-fancybox .fancybox__iframe {
           border-radius: 15px;
         }
-
+    
         .custom-fancybox .fancybox__close {
           display: none;
         }
       `;
       document.head.appendChild(style);
     }
+
 
     getModuleHeight() {
       const moduleElement = document.getElementById("reservo-widget");
