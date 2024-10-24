@@ -207,30 +207,22 @@
         .custom-fancybox .fancybox__container {
           padding: 0 !important;
         }
-    
-        /* Target other Fancybox components */
-        .custom-fancybox {
-          --fancybox-bg: rgba(0, 0, 0, 0.1);
-          --fancybox-content-bg: transparent;
-          --fancybox-content-radius: 15px;
-          --fancybox-content-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        }
-    
+
+        /* Add other custom styles */
         .custom-fancybox .fancybox__content {
           padding: 0 !important;
         }
-    
+
         .custom-fancybox .fancybox__iframe {
           border-radius: 15px;
         }
-    
+
         .custom-fancybox .fancybox__close {
           display: none;
         }
       `;
       document.head.appendChild(style);
     }
-
 
     getModuleHeight() {
       const moduleElement = document.getElementById("reservo-widget");
@@ -280,10 +272,8 @@
                 window.innerWidth < this.minWidth ||
                 window.innerHeight < this.minHeight
               ) {
-                // Allow the link to open in a new tab
                 return;
               } else {
-                // Prevent opening another Fancybox
                 e.preventDefault();
                 return;
               }
@@ -292,10 +282,8 @@
               window.innerWidth < this.minWidth ||
               window.innerHeight < this.minHeight
             ) {
-              // Let the link open in a new tab
               this.isOpen = true;
               window.open(element.href, "_blank");
-              // Optionally reset isOpen when window regains focus
               window.addEventListener(
                 "focus",
                 () => {
@@ -316,10 +304,16 @@
                   },
                 ],
                 {
-                  // Use 'mainClass' to add a custom class
                   mainClass: "custom-fancybox",
                   closeButton: false,
                   on: {
+                    reveal: (fancybox) => {
+                      // Force removal of padding via JavaScript
+                      const container = fancybox.$container;
+                      if (container) {
+                        container.style.padding = "0";  // Remove padding
+                      }
+                    },
                     destroy: () => {
                       this.isOpen = false;
                     },
@@ -349,5 +343,6 @@
     initInstaBook();
   }
 })();
+
 
 
