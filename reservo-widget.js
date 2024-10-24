@@ -183,13 +183,12 @@
         script.src =
           "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js";
         script.onload = () => {
-          // Load CSS after script
           const link = document.createElement("link");
           link.rel = "stylesheet";
           link.href =
             "https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css";
           link.onload = () => {
-            // Now inject custom styles after Fancybox CSS has loaded
+            // Inject custom styles after Fancybox CSS has loaded
             this.injectCustomStyles();
             resolve();
           };
@@ -203,16 +202,16 @@
     injectCustomStyles() {
       const style = document.createElement("style");
       style.textContent = `
-        .fancybox__container.no-padding {
+        /* Add custom class to target Fancybox instance */
+        .fancybox__container.custom-padding {
           --fancybox-content-padding: 0;
         }
-        /* Ensure padding is removed even in compact mode */
-        .fancybox__container.no-padding .fancybox__content {
-          padding: 0 !important;
+        .fancybox__container.custom-padding .fancybox__content {
+          padding: 0; /* Remove any additional padding */
         }
-        /* Hide the close button if needed */
+        /* Hide the close button if desired */
         .fancybox__content > .f-button.is-close-btn {
-          display: none !important;
+          display: none;
         }
       `;
       document.head.appendChild(style);
@@ -235,21 +234,13 @@
                   },
                 ],
                 {
-                  mainClass: "no-padding", // Add custom class to container
-                  template: {
-                    // Remove close button from template if desired
-                    closeButton: false,
-                  },
-                  // Other options...
-                  // Disable animations
+                  mainClass: "custom-padding", // Add custom class
+                  // Other options if needed
                   animated: false,
-                  // Disable click to close
-                  click: null,
-                  // Disable drag to close
+                  click: false,
                   dragToClose: false,
-                  // Disable compact mode if necessary
-                  compact: false,
-                  // Add any other desired options
+                  Toolbar: false,
+                  closeButton: "top", // Or false to remove it
                 }
               );
             });
