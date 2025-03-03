@@ -66,6 +66,11 @@
       const style = document.createElement("style");
       style.textContent = `
         /* Custom class applied when Fancybox is shown */
+
+        .fancybox__iframe body {
+          background-color: transparent !important;
+        }
+
         .custom-css .fancybox__container {
           padding: 0 !important;
           background-color: transparent;
