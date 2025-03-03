@@ -1,7 +1,7 @@
 (function () {
   class InstaBookModule {
     constructor() {
-      this.defaultHeight = 600;
+      this.defaultHeight = 750;
       this.defaultWidth = 512;
       this.minWidth = 849;
       this.minHeight = 649;
@@ -67,18 +67,18 @@
       style.textContent = `
         /* Custom class applied when Fancybox is shown */
 
-        .fancybox__iframe body {
-          background-color: transparent !important;
-        }
-
         .custom-css .fancybox__container {
           padding: 0 !important;
           background-color: transparent;
         }
 
         .custom-css .fancybox__content {
-          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-          border-radius: 15px !important;
+          // box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+          // border-radius: 15px !important;
+          position: fixed;
+          right: 8px;
+          bottom: 72px;
+          background: transparent !important;
           padding: 0 !important;
         }
 
