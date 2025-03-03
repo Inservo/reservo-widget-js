@@ -67,34 +67,21 @@
       style.textContent = `
         /* Custom class applied when Fancybox is shown */
 
-        .custom-css .fancybox__container {
+        .fancybox__container {
+          background-color: transparent !important;
           padding: 0 !important;
-          background-color: transparent;
         }
 
-        .custom-css .fancybox__content {
+        .fancybox__content {
           // box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
           // border-radius: 15px !important;
+
           position: fixed;
           right: 8px;
           bottom: 72px;
           background: transparent !important;
-          padding: 0 !important;
-        }
 
-        .fancybox__container {
           padding: 0 !important;
-          background-color: transparent;
-        }
-
-        .fancybox__content {
-          box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-          border-radius: 15px !important;
-          padding: 0 !important;
-        }
-
-        .custom-css .fancybox__iframe {
-          border-radius: 15px !important;
         }
 
         .fancybox__backdrop {
