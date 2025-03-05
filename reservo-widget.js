@@ -77,8 +77,8 @@
           // border-radius: 15px !important;
 
           position: fixed;
-          right: 8px;
-          bottom: 72px;
+          right: 6px;
+          bottom: 6px;
           background: transparent !important;
 
           padding: 0 !important;
