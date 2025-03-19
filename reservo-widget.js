@@ -89,6 +89,14 @@
           background: none !important;
         }
 
+        .fancybox__viewport {
+          display: none !important;
+        }
+
+        .fancybox__carousel {
+          display: none !important;
+        }
+
         body.fancybox-active {
           overflow: auto !important;
         }
