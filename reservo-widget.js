@@ -79,7 +79,7 @@
 
           position: fixed;
           right: 8px;
-          bottom: 64px;
+          bottom: 8px;
           background: transparent !important;
 
           padding: 0 !important;
