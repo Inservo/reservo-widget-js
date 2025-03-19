@@ -136,6 +136,11 @@
 
       let isOpen = false; // Add this line
 
+      .no-shadow {
+        box-shadow: none !important;
+        filter: none !important;
+      }
+
       Object.entries(links).forEach(([selector, dimensions]) => {
         const element = document.querySelector(selector);
         if (element) {
@@ -147,6 +152,7 @@
             } else {
               e.preventDefault(); // Prevent default only for FancyBox
               isOpen = true; // Set isOpen to true
+              element.classList.add("no-shadow");
               Fancybox.show(
                 [
                   {
@@ -161,6 +167,7 @@
                   on: {
                     destroy: () => {
                       isOpen = false; // Reset isOpen when FancyBox is closed
+                      element.classList.remove("no-shadow");
                     },
                   },
                 }
