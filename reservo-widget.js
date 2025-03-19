@@ -56,6 +56,7 @@
     setupFancyBox() {
       Fancybox.bind("[data-fancybox]", {
         showClass: "custom-css", // This will add the custom-css class
+        hideScrollbar: false,
       });
 
       this.injectCustomStyles();
