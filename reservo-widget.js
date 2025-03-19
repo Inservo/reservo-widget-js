@@ -53,9 +53,6 @@
         : this.defaultWidth;
     }
 
-    Fancybox.defaults.animationEffect = false;
-    Fancybox.defaults.animationDuration = 0;
-
     setupFancyBox() {
       Fancybox.bind("[data-fancybox]", {
         showClass: "custom-css", // This will add the custom-css class
