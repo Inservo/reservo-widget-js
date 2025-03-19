@@ -74,11 +74,6 @@
           z-index: 9999 !important;
         }
 
-        .no-shadow {
-          box-shadow: none !important;
-          filter: none !important;
-        }
-
         .fancybox__content {
           // box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
           // border-radius: 15px !important;
@@ -152,7 +147,6 @@
             } else {
               e.preventDefault(); // Prevent default only for FancyBox
               isOpen = true; // Set isOpen to true
-              element.classList.add("no-shadow");
               Fancybox.show(
                 [
                   {
@@ -167,7 +161,6 @@
                   on: {
                     destroy: () => {
                       isOpen = false; // Reset isOpen when FancyBox is closed
-                      element.classList.remove("no-shadow");
                     },
                   },
                 }
