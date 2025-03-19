@@ -163,6 +163,7 @@
                   },
                 ],
                 {
+                  hideScrollbar: false,
                   on: {
                     destroy: () => {
                       isOpen = false; // Reset isOpen when FancyBox is closed
