@@ -147,6 +147,7 @@
             } else {
               e.preventDefault(); // Prevent default only for FancyBox
               isOpen = true; // Set isOpen to true
+              element.classList.add("no-shadow");
               Fancybox.show(
                 [
                   {
@@ -161,6 +162,7 @@
                   on: {
                     destroy: () => {
                       isOpen = false; // Reset isOpen when FancyBox is closed
+                      element.classList.remove("no-shadow");
                     },
                   },
                 }
