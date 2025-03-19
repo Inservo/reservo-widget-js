@@ -173,11 +173,8 @@
 
   // Initialize the module
   function initInstaBook() {
-    const pixelRatio = window.devicePixelRatio || 1;
-    if (window.innerWidth / pixelRatio > 641) {
-      const instaBook = new InstaBookModule();
-      instaBook.init().catch(console.error);
-    }
+    const instaBook = new InstaBookModule();
+    instaBook.init().catch(console.error);
   }
 
   // Run initialization when DOM is ready
