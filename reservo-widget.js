@@ -136,37 +136,39 @@
       let isOpen = false; // Add this line
 
       Object.entries(links).forEach(([selector, dimensions]) => {
-        if (isOpen) {
-          e.preventDefault();
-          return;
-        }
-        if (
-          window.innerWidth < this.minWidth ||
-          window.innerHeight < this.minHeight
-        ) {
-          // Open in a new tab on smaller screens.
-          window.open(element.href, "_blank");
-        } else {
-          e.preventDefault();
-          isOpen = true;
-          Fancybox.show(
-            [
-              {
-                src: element.href,
-                type: "iframe",
-                width: dimensions.width,
-                height: dimensions.height,
-              },
-            ],
-            {
-              hideScrollbar: false,
-              on: {
-                destroy: () => {
-                  isOpen = false;
+        element.addEventListener("click", (e) => {
+          if (isOpen) {
+            e.preventDefault();
+            return;
+          }
+          if (
+            window.innerWidth < this.minWidth ||
+            window.innerHeight < this.minHeight
+          ) {
+            // Open in a new tab on smaller screens.
+            window.open(element.href, "_blank");
+          } else {
+            e.preventDefault();
+            isOpen = true;
+            Fancybox.show(
+              [
+                {
+                  src: element.href,
+                  type: "iframe",
+                  width: dimensions.width,
+                  height: dimensions.height,
                 },
-              },
-            }
-          );
+              ],
+              {
+                hideScrollbar: false,
+                on: {
+                  destroy: () => {
+                    isOpen = false;
+                  },
+                },
+              }
+            );
+          }
         }
       });
     }
