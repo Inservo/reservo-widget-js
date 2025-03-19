@@ -136,39 +136,23 @@
       let isOpen = false; // Add this line
 
       Object.entries(links).forEach(([selector, dimensions]) => {
-        const element = document.querySelector(selector);
-        if (element) {
-          element.addEventListener("click", (e) => {
-            if (isOpen) {
-              // Add this check
-              e.preventDefault();
-              return;
-            }
-            if (
-              window.innerWidth < this.minWidth ||
-              window.innerHeight < this.minHeight
-            ) {
-              // Don't prevent default behavior, let the link open in a new tab
-              window.open(element.href, "_blank");
-            } else {
-              e.preventDefault(); // Prevent default only for FancyBox
-              isOpen = true; // Set isOpen to true
-              Fancybox.show(
-                [
-                  {
-                    src: element.href,
-                    type: "iframe",
-                    width: dimensions.width,
-                    height: dimensions.height,
-                  },
-                ],
-                {
-                  hideScrollbar: false,
-                  on: {
-                    destroy: () => {
-                      isOpen = false; // Reset isOpen when FancyBox is closed
-                    },
-                  },
+        const element = document.querySelector(selector)
+          e.preventDefault(); // Prevent default only for FancyBox
+          isOpen = true; // Set isOpen to true
+          Fancybox.show(
+            [
+              {
+                src: element.href,
+                type: "iframe",
+                width: dimensions.width,
+                height: dimensions.height,
+              },
+            ],
+            {
+              hideScrollbar: false,
+              on: {
+                destroy: () => {
+                  isOpen = false; // Reset isOpen when FancyBox is closed
                 }
               );
             }
