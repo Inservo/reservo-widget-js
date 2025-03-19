@@ -61,6 +61,12 @@
 
       this.injectCustomStyles();
       this.setupModuleLinks();
+
+      window.addEventListener("message", (event) => {
+        if (event.data?.type === "CLOSE_FANCYBOX" && window.Fancybox) {
+          window.Fancybox.close();
+        }
+      });
     }
 
     injectCustomStyles() {
