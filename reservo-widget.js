@@ -136,9 +136,19 @@
       let isOpen = false; // Add this line
 
       Object.entries(links).forEach(([selector, dimensions]) => {
-        const element = document.querySelector(selector)
-          e.preventDefault(); // Prevent default only for FancyBox
-          isOpen = true; // Set isOpen to true
+        if (isOpen) {
+          e.preventDefault();
+          return;
+        }
+        if (
+          window.innerWidth < this.minWidth ||
+          window.innerHeight < this.minHeight
+        ) {
+          // Open in a new tab on smaller screens.
+          window.open(element.href, "_blank");
+        } else {
+          e.preventDefault();
+          isOpen = true;
           Fancybox.show(
             [
               {
@@ -152,11 +162,11 @@
               hideScrollbar: false,
               on: {
                 destroy: () => {
-                  isOpen = false; // Reset isOpen when FancyBox is closed
-                }
-              );
+                  isOpen = false;
+                },
+              },
             }
-          });
+          );
         }
       });
     }
