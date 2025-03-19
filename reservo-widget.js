@@ -158,6 +158,8 @@
                   },
                 ],
                 {
+                  animationEffect: "slide",
+                  animationDuration: 200,
                   hideScrollbar: false,
                   on: {
                     destroy: () => {
