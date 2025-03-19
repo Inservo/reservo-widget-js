@@ -143,13 +143,6 @@
               // Add this check
               e.preventDefault();
               return;
-            }
-            if (
-              window.innerWidth < this.minWidth ||
-              window.innerHeight < this.minHeight
-            ) {
-              // Don't prevent default behavior, let the link open in a new tab
-              window.open(element.href, "_blank");
             } else {
               e.preventDefault(); // Prevent default only for FancyBox
               isOpen = true; // Set isOpen to true
