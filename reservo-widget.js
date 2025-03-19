@@ -136,6 +136,8 @@
       let isOpen = false; // Add this line
 
       Object.entries(links).forEach(([selector, dimensions]) => {
+        const element = document.querySelector(selector);
+        if (!element) return;
         element.addEventListener("click", (e) => {
           if (isOpen) {
             e.preventDefault();
