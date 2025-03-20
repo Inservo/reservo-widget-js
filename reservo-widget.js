@@ -85,8 +85,8 @@
           border-radius: 15px !important;
 
           position: fixed;
-          right: 8px;
-          bottom: 8px;
+          right: 16px;
+          bottom: 16px;
           background: transparent !important;
 
           padding: 0 !important;
