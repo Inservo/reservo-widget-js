@@ -144,6 +144,10 @@
 
       Object.entries(links).forEach(([selector, dimensions]) => {
         const element = document.querySelector(selector);
+        if (Fancybox.getInstance()) {
+          e.preventDefault();
+          return;
+        }
         if (element) {
           element.addEventListener("click", (e) => {
             if (isOpen) {
