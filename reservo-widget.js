@@ -82,7 +82,7 @@
 
         .fancybox__content {
           // box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-          // border-radius: 15px !important;
+          border-radius: 15px !important;
 
           position: fixed;
           right: 8px;
