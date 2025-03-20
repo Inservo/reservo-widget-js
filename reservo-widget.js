@@ -2,7 +2,7 @@
   class InstaBookModule {
     constructor() {
       this.defaultHeight = 750;
-      this.defaultWidth = 512;
+      this.defaultWidth = 640;
       this.minWidth = 849;
       this.minHeight = 649;
     }
