@@ -77,6 +77,7 @@
         .fancybox__container {
           background-color: transparent !important;
           padding: 0 !important;
+          border-radius: 15px !important;
           z-index: 9999 !important;
         }
 
