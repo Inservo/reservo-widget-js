@@ -1,7 +1,6 @@
 (function () {
   class InstaBookModule {
     constructor() {
-      this.maxHeight = 700;
       this.defaultHeight = 700;
       this.defaultWidth = 432;
     }
@@ -41,17 +40,13 @@
         return parseInt(moduleElement.dataset.moduleHeight, 10);
       }
 
-      // Calculate 80% of viewport height
+      // Calculate viewport height minus 32px
       const viewportHeight = window.innerHeight;
-      const responsiveHeight = Math.floor(viewportHeight * 0.8);
+      const responsiveHeight = viewportHeight - 32;
 
       // Return the smaller of responsive height or max height,
-      // but default to defaultHeight if the screen is large enough
-      if (viewportHeight >= this.defaultHeight / 0.8) {
-        return this.defaultHeight;
-      } else {
-        return Math.min(responsiveHeight, this.maxHeight);
-      }
+      // but default to defaultHeight if it's smaller than the calculated height
+      return Math.min(responsiveHeight, this.maxHeight);
     }
 
     getModuleWidth() {
