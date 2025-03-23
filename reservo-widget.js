@@ -36,17 +36,9 @@
 
     getModuleHeight() {
       const moduleElement = document.getElementById("reservo-widget");
-      if (moduleElement?.dataset.moduleHeight) {
-        return parseInt(moduleElement.dataset.moduleHeight, 10);
-      }
-
-      // Calculate viewport height minus 32px
-      const viewportHeight = window.innerHeight;
-      const responsiveHeight = viewportHeight - 32;
-
-      // Return the smaller of responsive height or max height,
-      // but default to defaultHeight if it's smaller than the calculated height
-      return Math.min(responsiveHeight, this.maxHeight);
+      return moduleElement?.dataset.moduleHeight
+        ? parseInt(moduleElement.dataset.moduleHeight, 10)
+        : this.defaultHeight;
     }
 
     getModuleWidth() {
@@ -67,17 +59,6 @@
 
       this.injectCustomStyles();
       this.setupModuleLinks();
-
-      // Update height on window resize
-      window.addEventListener("resize", () => {
-        const instance = Fancybox.getInstance();
-        if (instance) {
-          const height = this.getModuleHeight();
-          instance.setContent(instance.getSlide(), {
-            height: height,
-          });
-        }
-      });
 
       window.addEventListener("message", (event) => {
         if (event.data?.type === "CLOSE_FANCYBOX" && window.Fancybox) {
@@ -158,29 +139,27 @@
 
       Object.entries(links).forEach(([selector, dimensions]) => {
         const element = document.querySelector(selector);
+        if (Fancybox.getInstance()) {
+          e.preventDefault();
+          return;
+        }
         if (element) {
           element.addEventListener("click", (e) => {
-            if (isOpen || Fancybox.getInstance()) {
+            if (isOpen) {
+              // Add this check
               e.preventDefault();
               return;
             } else {
               e.preventDefault(); // Prevent default only for FancyBox
               isOpen = true; // Set isOpen to true
               element.classList.add("no-shadow");
-
-              // Dynamically calculate height when opening
-              const height =
-                selector === "#reservo-widget"
-                  ? this.getModuleHeight()
-                  : dimensions.height;
-
               Fancybox.show(
                 [
                   {
                     src: element.href,
                     type: "iframe",
                     width: dimensions.width,
-                    height: height,
+                    height: dimensions.height,
                   },
                 ],
                 {
