@@ -60,6 +60,20 @@
       this.injectCustomStyles();
       this.setupModuleLinks();
 
+      // Update height on window resize
+      window.addEventListener("resize", () => {
+        // Find the fancybox content element
+        const fancyboxContent = document.querySelector(".fancybox__content");
+        if (fancyboxContent) {
+          // Calculate viewport height minus 32px
+          const viewportHeight = window.innerHeight;
+          const height = Math.min(viewportHeight - 32, this.maxHeight);
+
+          // Update the element's style directly
+          fancyboxContent.style.height = `${height}px`;
+        }
+      });
+
       window.addEventListener("message", (event) => {
         if (event.data?.type === "CLOSE_FANCYBOX" && window.Fancybox) {
           window.Fancybox.close();
