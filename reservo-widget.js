@@ -1,7 +1,7 @@
 (function () {
   class InstaBookModule {
     constructor() {
-      this.defaultHeight = 700;
+      this.defaultHeight = 872;
       this.defaultWidth = 432;
     }
 
@@ -53,27 +53,42 @@
 
     setupFancyBox() {
       Fancybox.bind("[data-fancybox]", {
-        showClass: "custom-css", // This will add the custom-css class
+        showClass: "custom-css",
         hideScrollbar: false,
       });
 
       this.injectCustomStyles();
       this.setupModuleLinks();
 
-      // Update height on window resize
-      window.addEventListener("resize", () => {
-        // Find the fancybox content element
-        const fancyboxContent = document.querySelector(".fancybox__content");
-        if (fancyboxContent) {
-          // Calculate viewport height minus 32px
-          const viewportHeight = window.innerHeight;
-          const height = Math.min(viewportHeight - 32, this.maxHeight);
+      // Store the default height
+      this.defaultHeight = 872;
 
-          // Update the element's style directly
+      // Function to calculate and set the appropriate height
+      const setResponsiveHeight = () => {
+        const fancyboxContent = document.querySelector(".fancybox__content");
+
+        console.log("window.innerHeight: ", window.innerHeight);
+
+        if (fancyboxContent) {
+          const viewportHeight = window.innerHeight;
+          // Use the smaller of default height or viewport height minus 32px
+          const height = Math.min(this.defaultHeight, viewportHeight - 32);
           fancyboxContent.style.height = `${height}px`;
         }
-      });
+      };
 
+      // Set height on window resize
+      window.addEventListener("resize", setResponsiveHeight);
+
+      // Run once to set initial dimensions when FancyBox opens
+      Fancybox.defaults.on = {
+        ...Fancybox.defaults.on,
+        done: () => {
+          setTimeout(setResponsiveHeight, 0);
+        },
+      };
+
+      // Handle close events
       window.addEventListener("message", (event) => {
         if (event.data?.type === "CLOSE_FANCYBOX" && window.Fancybox) {
           window.Fancybox.close();
@@ -85,7 +100,6 @@
       const style = document.createElement("style");
       style.textContent = `
         /* Custom class applied when Fancybox is shown */
-
         .fancybox__container {
           background-color: transparent !important;
           padding: 0 !important;
@@ -96,13 +110,19 @@
         .fancybox__content {
           box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
           border-radius: 15px !important;
-
           position: fixed;
           right: 16px;
           bottom: 16px;
           background: transparent !important;
-
           padding: 0 !important;
+          height: 872px !important; /* Default height */
+          max-height: calc(100vh - 32px) !important; /* Maximum height constraint */
+          transition: height 0.2s ease; /* Smooth transition when height changes */
+        }
+
+        .fancybox__content iframe {
+          height: 100% !important; /* Make iframe fill the container */
+          width: 100% !important;
         }
 
         .fancybox__backdrop {
@@ -128,6 +148,7 @@
             max-height: 100% !important;
             transform: none !important;
             margin: 0 !important;
+            border-radius: 0 !important;
           }
         }
 
@@ -173,7 +194,10 @@
                     src: element.href,
                     type: "iframe",
                     width: dimensions.width,
-                    height: dimensions.height,
+                    height: Math.min(
+                      this.defaultHeight,
+                      window.innerHeight - 32
+                    ),
                   },
                 ],
                 {
