@@ -1,10 +1,10 @@
 (function () {
   class InstaBookModule {
     constructor() {
-      this.defaultHeight = 750;
-      this.defaultWidth = 515
-      this.minWidth = 849;
-      this.minHeight = 649;
+      this.defaultHeight = 700;
+      this.defaultWidth = 432;
+      this.maxHeight = 700;
+      this.minWidth = 432;
     }
 
     async init() {
